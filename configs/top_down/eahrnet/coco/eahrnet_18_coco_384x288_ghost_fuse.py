@@ -1,6 +1,6 @@
 log_level = 'INFO'
 load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
-resume_from = None
+resume_from = 'work_dirs/eahrnet_18_coco_384x288_ghost_fuse/epoch_10.pth'#None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
@@ -159,8 +159,8 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=48,#64,
-    workers_per_gpu=4,#4,
+    samples_per_gpu=80,#64,
+    workers_per_gpu=6,#4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',
