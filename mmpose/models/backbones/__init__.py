@@ -20,6 +20,7 @@ from .vgg import VGG
 from .litehrnet import LiteHRNet
 from .eahrnet import EAHRNet
 from .eahrnet_ghost import EAHRNet_ghost
+from .eahrnet_ghost_fuse import EAHRNet_ghost_fuse
 from .eahrnet_ca import EAHRNet_ca
 from .eahrnet_aug_ghost_ca import EAHRNet_aug_ghost_ca
 from .ghost_hrnet import GhostHRNet
@@ -30,5 +31,5 @@ __all__ = [
     'ResNet', 'ResNetV1d', 'ResNeXt', 'SCNet', 'SEResNet', 'SEResNeXt',
     'ShuffleNetV1', 'ShuffleNetV2', 'CPM', 'RSN', 'MSPN', 'ResNeSt', 'VGG',
     'TCN','LiteHRNet','EAHRNet','GhostHRNet','EAHRNet_ghost','EAHRNet_ca','EAHRNet_aug_ghost_ca',
-    'EAHRNet_ghost_bottleneck'
+    'EAHRNet_ghost_bottleneck','EAHRNet_ghost_fuse'
 ]

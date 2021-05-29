@@ -115,6 +115,8 @@ mmpose/version.py
 *.log.json
 *.npy
 work_dirs/
+!work_dirs/*/epoch_210*.pth
+!work_dirs/*/epoch_210.pth
 
 # Pytorch
 *.pth

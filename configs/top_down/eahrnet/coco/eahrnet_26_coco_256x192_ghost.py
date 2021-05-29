@@ -40,15 +40,15 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost_fuse', #'EAHRNet_ghost_fuse'
+        type='EAHRNet_ghost_fuse',
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),
             num_stages=3,
             stages_spec=dict(
-                num_modules=(2, 4, 2),
+                num_modules=(3, 6, 3),
                 num_branches=(2, 3, 4),
-                num_blocks=(4, 4, 4),
+                num_blocks=(2, 2, 2),
                 module_type=('LITE', 'LITE', 'LITE'),
                 with_fuse=(True, True, True),
                 reduce_ratios=(8, 8, 8),
@@ -69,7 +69,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process='unbiased', #'unbiased', ##'default'  True
+        post_process=True, #'unbiased', ##'default'  True
         shift_heatmap=True,
         unbiased_decoding=False,
         modulate_kernel=11),
@@ -127,7 +127,7 @@ train_pipeline = [
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=2, unbiased_encoding=True), # unbiased_encoding=True), ##
+    dict(type='TopDownGenerateTarget', sigma=2), # unbiased_encoding=True), ##
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -159,8 +159,8 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=128,#64,
-    workers_per_gpu=8,#4,
+    samples_per_gpu=56,#64,
+    workers_per_gpu=4,#4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',

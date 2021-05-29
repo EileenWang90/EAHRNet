@@ -40,7 +40,7 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost',
+        type='EAHRNet_ghost_fuse',
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),

@@ -73,7 +73,7 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process=True,
+        post_process='unbiased', #'unbiased', ##'default'  True
         shift_heatmap=True,
         unbiased_decoding=False,
         modulate_kernel=11),
@@ -130,7 +130,7 @@ train_pipeline = [
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=3),
+    dict(type='TopDownGenerateTarget', sigma=3, unbiased_encoding=True), # unbiased_encoding=True),
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -159,7 +159,8 @@ val_pipeline = [
         ]),
 ]
 test_pipeline = val_pipeline
-data_root = 'data/coco'
+# data_root = 'data/coco'
+data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
     samples_per_gpu=32,
     workers_per_gpu=4,

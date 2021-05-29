@@ -1,6 +1,6 @@
 log_level = 'INFO'
 load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
-resume_from = None
+resume_from = "work_dirs/eahrnet_18_coco_256x192_ghost_bottleneck/epoch_100.pth"
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)

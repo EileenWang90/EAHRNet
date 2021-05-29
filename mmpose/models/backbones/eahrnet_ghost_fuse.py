@@ -331,7 +331,7 @@ class GhostBottleneck(nn.Module):
         return x
 
 
-class Stem_ghost(nn.Module):
+class Stem(nn.Module):  #Stem_ghost
 
     def __init__(self,
                  in_channels,
@@ -374,7 +374,7 @@ class Stem_ghost(nn.Module):
 
         return out
 
-class Stem(nn.Module):  #Stem_shuffle
+class Stem_shuffle(nn.Module):  #Stem_shuffle
 
     def __init__(self,
                  in_channels,
@@ -886,7 +886,7 @@ class EAHRModule(nn.Module):
 
 
 @BACKBONES.register_module()
-class EAHRNet_ghost(nn.Module):
+class EAHRNet_ghost_fuse(nn.Module):
     """EfficientAttention-HRNet backbone.
 
     `High-Resolution Representations for Labeling Pixels and Regions

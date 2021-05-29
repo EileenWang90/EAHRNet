@@ -40,7 +40,7 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost',
+        type='EAHRNet_ghost_fuse', #'EAHRNet_ghost_fuse'
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),
@@ -76,8 +76,8 @@ model = dict(
     loss_pose=dict(type='JointsMSELoss', use_target_weight=True))
 
 data_cfg = dict(
-    image_size=[192, 256],
-    heatmap_size=[48, 64],
+    image_size=[288, 384],
+    heatmap_size=[72, 96],
     num_output_channels=channel_cfg['num_output_channels'],
     num_joints=channel_cfg['dataset_joints'],
     dataset_channel=channel_cfg['dataset_channel'],
@@ -94,8 +94,8 @@ data_cfg = dict(
 )
 
 val_data_cfg = dict(
-    image_size=[192, 256],
-    heatmap_size=[48, 64],
+    image_size=[288, 384],
+    heatmap_size=[72, 96],
     num_output_channels=channel_cfg['num_output_channels'],
     num_joints=channel_cfg['dataset_joints'],
     dataset_channel=channel_cfg['dataset_channel'],
@@ -127,7 +127,7 @@ train_pipeline = [
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=2), # unbiased_encoding=True), ##
+    dict(type='TopDownGenerateTarget', sigma=3), # unbiased_encoding=True), ##
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -159,7 +159,7 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=64,#64,
+    samples_per_gpu=48,#64,
     workers_per_gpu=4,#4,
     train=dict(
         type='TopDownCocoDataset',

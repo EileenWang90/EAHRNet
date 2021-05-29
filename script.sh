@@ -20,14 +20,21 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_dark.py work_dirs/litehrnet_18_coco_256x192_dark/best.pth 1 --eval mAP
 ./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_256x192_augment.py work_dirs/litehrnet_18_coco_256x192_augment/best.pth 2 --eval mAP
 
+#******************************************* 384x288 ************************************************
+./tools/dist_test.sh configs/top_down/lite_hrnet/coco/litehrnet_18_coco_384x288.py checkpoint/litehrnet_18_coco_384x288.pth 3 --eval mAP
+
 #EAHRNet
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192.py work_dirs/eahrnet_18_coco_256x192/epoch_250.pth 1 --eval mAP
 #EAHRnet_ghost  ghost_fuse
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost.py work_dirs/eahrnet_18_coco_256x192_ghost/best.pth 3 --eval mAP
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py work_dirs/eahrnet_18_coco_256x192_ghost_fuse/best.pth 2 --eval mAP
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_bottleneck.py work_dirs/eahrnet_18_coco_256x192_ghost_bottleneck/best.pth 2 --eval mAP
 
+#******************************************* 384x288 ************************************************
+
+#EAHRnet only CoordAttention
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py work_dirs/eahrnet_18_coco_256x192_ca/best.pth 2 --eval mAP
-
+#EAHRnet  augment+Ghost+CA
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_aug-ghost-ca.py work_dirs/eahrnet_18_coco_256x192_aug-ghost-ca/best.pth 4 --eval mAP
 
 ################################################################### Train ######################################################################
@@ -49,8 +56,12 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 #EAHRnet_ghost  only ghost_bottleneck   
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_bottleneck.py 4 
 #EAHRnet_ghost  ghost_fuse
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost.py 4
 PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py 2
-PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_256x192_ghost_fuse.py 2
+PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_256x192_ghost_fuse.py 3
+#******************************************* 384x288 ************************************************
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_384x288_ghost_fuse.py 2
+
 #EAHRnet only CoordAttention
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py 2 
 #EAHRnet  augment+Ghost+CA
@@ -73,6 +84,9 @@ python tools/summary_network.py configs/top_down/eahrnet/coco/eahrnet_18_coco_25
 #EAHRnet ghost_bottleneck+fuse
 python tools/summary_network.py configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py --shape 256 192 
 python tools/summary_network.py configs/top_down/eahrnet/coco/eahrnet_30_coco_256x192_ghost_fuse.py --shape 256 192 
+#EAHRnet only ghost_fuse 363_2
+python tools/summary_network.py configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost.py --shape 256 192
+
 #EAHRnet  augment+Ghost+CA
 python tools/summary_network.py configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_aug-ghost-ca.py  --shape 256 192 
 
