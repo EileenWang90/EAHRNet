@@ -31,6 +31,9 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_bottleneck.py work_dirs/eahrnet_18_coco_256x192_ghost_bottleneck/best.pth 2 --eval mAP
 
 #******************************************* 384x288 ************************************************
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_384x288_ghost_fuse.py work_dirs/eahrnet_18_coco_384x288_ghost_fuse/best.pth 4 --eval mAP
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_384x288_ghost.py work_dirs/eahrnet_26_coco_384x288_ghost/best.pth 4 --eval mAP
+
 
 #EAHRnet only CoordAttention
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py work_dirs/eahrnet_18_coco_256x192_ca/best.pth 2 --eval mAP
@@ -61,6 +64,13 @@ PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_2
 PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_256x192_ghost_fuse.py 3
 #******************************************* 384x288 ************************************************
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_384x288_ghost_fuse.py 2
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_384x288_ghost.py 5
+
+#******************************************* Augment ************************************************
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_coarsedropout.py 4 
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_gridmask.py 2 
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_photometric.py 2 
+
 
 #EAHRnet only CoordAttention
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py 2 
@@ -97,3 +107,9 @@ python tools/summary_network.py configs/top_down/mobilenet_v2/coco/mobilenetv2_c
 python tools/summary_network.py configs/top_down/shufflenet_v2/coco/mobilenetv2_coco_256x192.py --shape 256 192 
 python tools/summary_network.py configs/top_down/shufflenet_v2/coco/shufflenetv2_coco_384x288.py --shape 384 288 
 
+
+################################################################### Demo ######################################################################
+python demo/top_down_img_demo.py \
+    configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost.py \
+    work_dirs/eahrnet_26_coco_256x192_ghost/best.pth \
+    --img-root tests/data/coco/ --json-file tests/data/coco/test_coco.json --out-img-root demo/output_imgs/

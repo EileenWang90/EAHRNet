@@ -1,6 +1,6 @@
 log_level = 'INFO'
 load_from = None #'work_dirs/litehrnet_18_coco_256x192/best_210.pth'#None
-resume_from = 'work_dirs/eahrnet_18_coco_384x288_ghost_fuse/epoch_10.pth'#None
+resume_from = None
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
@@ -40,15 +40,15 @@ model = dict(
     type='TopDown',
     pretrained=None, #None
     backbone=dict(
-        type='EAHRNet_ghost_fuse', #'EAHRNet_ghost_fuse'
+        type='EAHRNet_ghost_fuse',
         in_channels=3,
         extra=dict(
             stem=dict(stem_channels=32, out_channels=32, expand_ratio=1),
             num_stages=3,
             stages_spec=dict(
-                num_modules=(2, 4, 2),
+                num_modules=(3, 6, 3),
                 num_branches=(2, 3, 4),
-                num_blocks=(4, 4, 4),
+                num_blocks=(2, 2, 2),
                 module_type=('LITE', 'LITE', 'LITE'),
                 with_fuse=(True, True, True),
                 reduce_ratios=(8, 8, 8),
@@ -69,15 +69,15 @@ model = dict(
     train_cfg=dict(),
     test_cfg=dict(
         flip_test=True,
-        post_process='unbiased', #'unbiased', ##'default'  True
+        post_process=True, #'unbiased', ##'default'  True
         shift_heatmap=True,
         unbiased_decoding=False,
         modulate_kernel=11),
     loss_pose=dict(type='JointsMSELoss', use_target_weight=True))
 
 data_cfg = dict(
-    image_size=[288, 384],
-    heatmap_size=[72, 96],
+    image_size=[192, 256],
+    heatmap_size=[48, 64],
     num_output_channels=channel_cfg['num_output_channels'],
     num_joints=channel_cfg['dataset_joints'],
     dataset_channel=channel_cfg['dataset_channel'],
@@ -94,8 +94,8 @@ data_cfg = dict(
 )
 
 val_data_cfg = dict(
-    image_size=[288, 384],
-    heatmap_size=[72, 96],
+    image_size=[192, 256],
+    heatmap_size=[48, 64],
     num_output_channels=channel_cfg['num_output_channels'],
     num_joints=channel_cfg['dataset_joints'],
     dataset_channel=channel_cfg['dataset_channel'],
@@ -122,12 +122,13 @@ train_pipeline = [
         type='TopDownGetRandomScaleRotation', rot_factor=30,
         scale_factor=0.25),
     dict(type='TopDownAffine'),
+    dict(type='PhotometricDistortion'),
     dict(type='ToTensor'),
     dict(
         type='NormalizeTensor',
         mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
-    dict(type='TopDownGenerateTarget', sigma=3, unbiased_encoding=True), # unbiased_encoding=True), ##
+    dict(type='TopDownGenerateTarget', sigma=2), # unbiased_encoding=True), ##
     dict(
         type='Collect',
         keys=['img', 'target', 'target_weight'],
@@ -159,8 +160,8 @@ test_pipeline = val_pipeline
 # data_root = 'data/coco'
 data_root = '/home/ytwang/dataset/COCO2017'
 data = dict(
-    samples_per_gpu=80,#64,
-    workers_per_gpu=6,#4,
+    samples_per_gpu=56,#64,
+    workers_per_gpu=4,#4,
     train=dict(
         type='TopDownCocoDataset',
         ann_file=f'{data_root}/annotations/person_keypoints_train2017.json',

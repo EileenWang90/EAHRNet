@@ -1,8 +1,13 @@
 import os
+import sys
+sys.path.append("/home/ytwang/wyt_workspace/PoseEstimation/mmpose/")
+# print(sys.path) #需要加上/home/ytwang/wyt_workspace/PoseEstimation/mmpose/
+# print(os.getcwd()) #/home/ytwang/wyt_workspace/PoseEstimation/mmpose
 from argparse import ArgumentParser
 
 from xtcocotools.coco import COCO
 
+from mmpose import __version__
 from mmpose.apis import (inference_top_down_pose_model, init_pose_model,
                          vis_pose_result)
 

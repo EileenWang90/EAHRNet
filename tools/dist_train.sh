@@ -6,7 +6,7 @@ PORT=${PORT:-29500}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
 CUDA_VISIBLE_DEVICES=0,1 \
-/home/ytwang/anaconda3/envs/base2/bin/python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=$PORT \
+/home/ytwang/anaconda3/envs/base2/bin/python -m torch.distributed.launch --nproc_per_node=$GPUS --master_port=29501 \
     $(dirname "$0")/train.py $CONFIG --launcher pytorch ${@:3}
     # $(dirname "$0")/train.py $CONFIG ${@:3}
 

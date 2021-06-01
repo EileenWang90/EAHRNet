@@ -1,6 +1,9 @@
 import argparse
 import os
 import os.path as osp
+# import sys
+# print(sys.path)
+# print(os.getcwd())
 
 import mmcv
 import torch
