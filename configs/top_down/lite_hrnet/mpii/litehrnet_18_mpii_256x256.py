@@ -123,10 +123,10 @@ val_pipeline = [
         meta_keys=['image_file', 'center', 'scale', 'rotation', 'flip_pairs']),
 ]
 
-data_root = 'data/mpii'
+data_root = '/home/ytwang/dataset/mpii' #'data/mpii'
 data = dict(
-    samples_per_gpu=32,
-    workers_per_gpu=2,
+    samples_per_gpu=256, #32
+    workers_per_gpu=16, #2
     train=dict(
         type='TopDownMpiiDataset',
         ann_file=f'{data_root}/annotations/mpii_train.json',

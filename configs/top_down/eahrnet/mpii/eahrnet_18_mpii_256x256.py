@@ -1,6 +1,6 @@
 log_level = 'INFO'
 load_from = None
-resume_from = None
+resume_from = None  # 'work_dirs/eahrnet_18_mpii_256x256/best.pth'  
 dist_params = dict(backend='nccl')
 workflow = [('train', 1)]
 checkpoint_config = dict(interval=10)
@@ -123,10 +123,10 @@ val_pipeline = [
         meta_keys=['image_file', 'center', 'scale', 'rotation', 'flip_pairs']),
 ]
 
-data_root = 'data/mpii'
+data_root = '/home/ytwang/dataset/mpii' #'data/mpii'
 data = dict(
-    samples_per_gpu=32,
-    workers_per_gpu=2,
+    samples_per_gpu=128, #32
+    workers_per_gpu=8, #2
     train=dict(
         type='TopDownMpiiDataset',
         ann_file=f'{data_root}/annotations/mpii_train.json',

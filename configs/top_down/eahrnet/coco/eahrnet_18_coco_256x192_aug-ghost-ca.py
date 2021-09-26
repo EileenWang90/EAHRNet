@@ -123,19 +123,19 @@ train_pipeline = [
         scale_factor=0.25),
     dict(type='TopDownAffine'),
     #################################################################################################################
-    dict(
-    type='Albumentation',
-    transforms=[
-        dict(
-            type='CoarseDropout', #随机去除图像的一块区域 https://blog.csdn.net/zhangyuexiang123/article/details/107705311
-            max_holes=8,
-            max_height=40,
-            max_width=40,
-            min_holes=1,
-            min_height=10,
-            min_width=10,
-            p=0.5),
-    ]),
+    # dict(
+    # type='Albumentation',
+    # transforms=[
+    #     dict(
+    #         type='CoarseDropout', #随机去除图像的一块区域 https://blog.csdn.net/zhangyuexiang123/article/details/107705311
+    #         max_holes=8,
+    #         max_height=40,
+    #         max_width=40,
+    #         min_holes=1,
+    #         min_height=10,
+    #         min_width=10,
+    #         p=0.5),
+    # ]),
     ##################################################################################################################
     dict(type='ToTensor'),
     dict(

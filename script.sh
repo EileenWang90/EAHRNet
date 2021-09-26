@@ -30,6 +30,8 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py work_dirs/eahrnet_18_coco_256x192_ghost_fuse/best.pth 2 --eval mAP
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_bottleneck.py work_dirs/eahrnet_18_coco_256x192_ghost_bottleneck/best.pth 2 --eval mAP
 
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost.py work_dirs/eahrnet_26_coco_256x192_ghost/best_bottleneck_fuse.pth 4 --eval mAP
+
 #******************************************* 384x288 ************************************************
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_384x288_ghost_fuse.py work_dirs/eahrnet_18_coco_384x288_ghost_fuse/best.pth 4 --eval mAP
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_384x288_ghost.py work_dirs/eahrnet_26_coco_384x288_ghost/best.pth 4 --eval mAP
@@ -39,6 +41,22 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py work_dirs/eahrnet_18_coco_256x192_ca/best.pth 2 --eval mAP
 #EAHRnet  augment+Ghost+CA
 ./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_aug-ghost-ca.py work_dirs/eahrnet_18_coco_256x192_aug-ghost-ca/best.pth 4 --eval mAP
+
+#******************************************* Augment ************************************************
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_coarsedropout.py work_dirs/eahrnet_26_coco_256x192_ghost_coarsedropout/best.pth 4 --eval mAP
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_gridmask.py work_dirs/eahrnet_26_coco_256x192_ghost_gridmask/best.pth 2 --eval mAP
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_photometric.py  work_dirs/eahrnet_26_coco_256x192_ghost_photometric/best.pth 4 --eval mAP
+
+#EAHRnet_ghost  ghost_fuse+CA
+./tools/dist_test.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_ca.py work_dirs/eahrnet_26_coco_256x192_ghost_ca/best.pth 4 --eval mAP
+
+#********************************************* MPII *************************************************
+./tools/dist_test.sh configs/top_down/lite_hrnet/mpii/litehrnet_18_mpii_256x256.py checkpoint/litehrnet_18_mpii_256x256.pth 4 --eval PCKh
+./tools/dist_test.sh configs/top_down/eahrnet/mpii/eahrnet_18_mpii_256x256.py work_dirs/eahrnet_18_mpii_256x256/best.pth 4 --eval PCKh
+
+#**************** Train
+./tools/dist_train.sh configs/top_down/eahrnet/mpii/eahrnet_18_mpii_256x256.py 2 #train EG-HRNet
+
 
 ################################################################### Train ######################################################################
 # HRNet
@@ -62,6 +80,9 @@ PORT=29501 ./tools/dist_test.sh configs/top_down/hrnet/coco/hrnet_w32_coco_256x1
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost.py 4
 PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ghost_fuse.py 2
 PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_256x192_ghost_fuse.py 3
+#EAHRnet_ghost  ghost_fuse+CA
+./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_ca.py 4
+
 #******************************************* 384x288 ************************************************
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_384x288_ghost_fuse.py 2
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_384x288_ghost.py 5
@@ -71,7 +92,6 @@ PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_2
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_gridmask.py 2 
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_26_coco_256x192_ghost_photometric.py 2 
 
-
 #EAHRnet only CoordAttention
 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_18_coco_256x192_ca.py 2 
 #EAHRnet  augment+Ghost+CA
@@ -79,8 +99,10 @@ PORT=29501 ./tools/dist_train.sh configs/top_down/eahrnet/coco/eahrnet_30_coco_2
 
 ######################################################## Get the compulationaly complexity ######################################################
 #这儿似乎要把pretrained model注释掉  否则会出现unexpected key in source state_dict
+#resnet50
+python tools/summary_network.py configs/top_down/resnet/coco/res101_coco_256x192.py --shape 256 192 
 #HRNet
-python tools/summary_network.py configs/top_down/hrnet/coco/hrnet_18_coco_256x192.py --shape 256 192 
+python tools/summary_network.py configs/top_down/hrnet/coco/hrnet_w32_coco_256x192.py --shape 256 192 
 #HRNet 数据增强操作
 python tools/summary_network.py configs/top_down/augmentation/hrnet_w32_coco_256x192_photometric.py --shape 256 192  #如果config中有pretrain权重文件时，可以先注释掉
 

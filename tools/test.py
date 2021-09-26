@@ -4,6 +4,8 @@ import os.path as osp
 # import sys
 # print(sys.path)
 # print(os.getcwd())
+import sys
+sys.path.append("/home/ytwang/wyt_workspace/PoseEstimation/mmpose/")
 
 import mmcv
 import torch
